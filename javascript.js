@@ -124,12 +124,6 @@ function makeGistArray() {
 	}
 }
 
-
-//use for...in loop to filter results
-//function filter() {
-
-//}
-
 function loadResults(gistArr) {
 	resultsDiv = document.getElementById("results");
 	var textString;
@@ -152,13 +146,6 @@ function loadResults(gistArr) {
 		saveButton = document.createElement("button");
 		saveButton.addEventListener("click", function(){
 			saveGist(this);
-			/*
-			function innerClosure(){
-				var index = i;
-				saveGist(index);
-			}
-			innerClosure();
-			*/
 		});
 		
 		buttonText = document.createTextNode("Save Gist To Favorites: " + i);
