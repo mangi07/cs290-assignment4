@@ -4,7 +4,6 @@
 	<meta charset='utf-8'>
 	<title>CS290 Assignment 4</title>
 	<script src='javascript.js'></script>
-	<!--<script src='testJS.js'></script>-->
 </head>
 
 <body>
@@ -32,9 +31,9 @@
   <!-- section to display gist descriptions from server response -->
   <!-- each description is a link to the HTML version of the gist -->
   <!-- each description has a button to add it to the favorites section -->
-  <div>
+  <div id="results">
     <h1>Search Results</h1>
-  
+    <button onclick="removeResults()">Clear Results</button>
   
   </div>
   
@@ -45,20 +44,5 @@
   
   </div>
 
-<!--
-	<div id="output"></div>
-	<form>
-		<input type='text' name='demo-input'>
-		<input type='button' name='save' onclick='saveDemoInput()' value='Save Text'>
-	</form>
-	
-	<form>
-		<input type="text" name="demo-input">
-		<input type="button" name="save" onclick="saveDemoInput()" value="Save Text">
-		<input type="button" name="clear" onclick="clearLocalStorage()" value="Clear Local Storage">
-		<input type="button" name="display" onclick="displayLocalStorage()" value="Display Local Storage">
-	</form>
--->
-	
 </body>
 </html>

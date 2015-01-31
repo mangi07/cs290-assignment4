@@ -1,24 +1,30 @@
 window.onload = function() {
 
-//put function calls here...
-/*modify the following...*/
-/*
-var settingsStr = localStorage.getItem('userSettings');
-	if( settings === null) {
-		settings = {'sports':[]};
-		localStorage.setItem('userSettings', JSON.stringify(settings));
-	}
-	else {
-		settings = JSON.parse(settingsStr);
-	}
-	createSportList(document.getElementById('sport-list'));
-*/
+	
+
+	/* make this into a function */
+	/* localStorage code adapted from lecture javascript-applied-local-storage.mp4 */
+	var favorites = localStorage.getItem("favorites");
+		if( favorites === null) {
+			favorites = [];
+			//{"gistArr": [{"key1":"value1"},{"key2":"value2"}]}
+			localStorage.setItem('favorites', JSON.stringify(favorites));
+		}
+		else {
+			favorites = JSON.parse(favorites);
+			favoritesArray = favorites;
+		}
+
+	//does not work properly
+	if (favoritesArray)
+		loadResults(favoritesArray);
 
 }
 
 var pages = 1;
 var searchResultsJSON;
 var gistArray = [];	// an array of gist objects
+var favoritesArray = [];// an array filled with gist objects from local storage
 
 
 /*input: number of pages requested (ie: number of requests made)
@@ -29,16 +35,18 @@ function search() {
 	/*set the number of pages to return*/
 	pages = document.getElementsByName("pages")[0].value;
 	if (pages <=5 && pages >= 1) {
-	  //make request
+	  
 	  makeRequest(pages);
-	  //https://api.github.com/gists?page=2
+
+	  //eg request url: https://api.github.com/gists?page=2
+
 	} else {
 		alert("Invalid number of pages (must be 1 through 5).");
 	}
 }
 
-
-function makeRequest(numPages) {
+/* creates gistArray based on filters */
+function makeRequest(pages) {
 	
 	/* code adapted from lecture "ajax.mp4" */
 	var req = new XMLHttpRequest();
@@ -46,28 +54,23 @@ function makeRequest(numPages) {
 		throw 'Unable to create HttpRequest.';
 	} /* or do it the way mozilla shows - see this week's readings */
 	
-	//for (var i = 0; i < numPages; i++) {
+	for (var i = 0; i < pages; i++) {
 	
-	var url = 'https://api.github.com/gists?page=2';
-	url += '?page=' + numPages;
+	var url = "https://api.github.com/gists";
+	url += "?page=" + i;
 	req.onreadystatechange = function(){
 		if(this.readyState === 4){
 			searchResultsJSON = JSON.parse(this.responseText);
-			
-			/*DEBUG*/
-			console.log(searchResultsJSON);
 			makeGistArray();
-			
+			loadResults(gistArray);
 		}
 	};
-	req.open('GET', url); /* !! Note: For POST, the methods calls here on req would be a little different - so read the documentation !! */
+	req.open('GET', url);
 	req.send();
 	
-	//}
+	}
 	
-	
-	
-	
+
 }
 
 /* Returns an array of gist objects based on user filters*/
@@ -88,54 +91,19 @@ function makeGistArray() {
 				filters[j] = cBoxes[j].name;
 			}
 		}
-		//...but if all filters are false, set them all to true:
+		//...but if all filters are false (unchecked), set allFiltersOff to true:
 		var falseCount = 0;
 		for (j = 0; j < filters.length; j++)
 			if (!filters[j]) falseCount++;
 		if (falseCount == filters.length) {
 			allFiltersOff = true;
 		}
-		/*debug*/
-		console.log(falseCount == filters.length);
-		console.log(falseCount);
-		console.log(filters.length);
 	
 	//get file objects into array so we can filter each gist by language
 	for (var i = 0; i < searchResultsJSON.length; i++) {
-		//fileObjs.push(gist[0].files);
-		//console.log(gist[0].files);
-		//for (var obj in searchResultsJSON[i].files) {
-			//fileObjs.push(obj);
-		//}
-		//fileNames.push(Object.keys(searchResultsJSON[i].files)[0]);
 		description = searchResultsJSON[i].description;
 		fileName = Object.keys(searchResultsJSON[i].files)[0];
 		gistUrl = searchResultsJSON[i].url;
-		
-		/*debug*/
-		console.log(description);
-		console.log(fileName);
-		console.log(gistUrl);
-		
-		
-		
-	/*debug*/
-	console.log(filters);
-
-		
-		//filtering here: .py, .json, .js, .sql
-		//var fileType =
-		//gist = {"gist": {"description":description,
-		//					"fileName":fileName,
-		//					"gistUrl":gistUrl}};
-		//for (var k = 0; k < filters.length; k++) {
-		//	if (filters[k]) {
-		//		var pattern = "/" + filters[k] + "$/";
-		//		var regEx = new RegExp(pattern);
-		//		if (regEx.test(fileName))
-		//			gistArray.push(gist);
-		//	}
-		//}
 		
 		//check if all checkboxes are unchecked
 		if (allFiltersOff) {
@@ -152,53 +120,70 @@ function makeGistArray() {
 							"fileName":fileName,
 							"gistUrl":gistUrl}};
 			gistArray.push(gist);	
-		//} else { //we assume no filters were set (all boxes unchecked)
-		//	gist = {"gist": {"description":description,
-		//					"fileName":fileName,
-		//					"gistUrl":gistUrl}};
-		//	gistArray.push(gist);
-		}
-		
+		}	
 	}
-	console.log(gistArray);
-	
-		
-	//filter language
-	/*
-	for (i = 0; i < searchResultsJSON.length; i++) {
-		description = fileObjs[i].filename;
-		language = fileObjs[i].language;
-		gistUrl = fileObjs[i].raw_url;
-		
-		
-		//filtering here:
-		if (language == filters[0] ||
-			language == filters[1] ||
-			language == filters[2] ||
-			language == filters[3]) {
-			gist = {"gist": {"description":description,
-							"language":language,
-							"gistUrl":gistUrl}};
-			gistArray.push(gist);	
-		} else { //we assume no filters were set (all boxes unchecked)
-			gist = {"gist": {"description":description,
-							"language":language,
-							"gistUrl":gistUrl}};
-			gistArray.push(gist);
-		}
-		
-		
-	}
-	*/
 }
 
 
 //use for...in loop to filter results
-function filter() {
+//function filter() {
+
+//}
+
+function loadResults(gistArr) {
+	resultsDiv = document.getElementById("results");
+	var textString;
+	var entryTextNode;
+	var entryContainer;
+	var entryLink;
+	var saveButton;
+	var buttonText;
+
+	for (var i = 0; i < gistArr.length; i++) {
+		//if (gistArray[i].gist.url != favoritesArray[i].gist.url) {
+			textString = "DESCRIPTION: " + gistArr[i].gist.description +
+						" FILE NAME: " + gistArr[i].gist.fileName + 
+						" GIST URL: " + gistArr[i].gist.gistUrl;
+		//}
+		entryTextNode = document.createTextNode(textString);
+		entryContainer = document.createElement("p");
+		entryLink = document.createElement("a");
+		entryLink.href = gistArr[i].gist.gistUrl;
+		saveButton = document.createElement("button");
+		saveButton.addEventListener("click", function(){
+			saveGist(this);
+			/*
+			function innerClosure(){
+				var index = i;
+				saveGist(index);
+			}
+			innerClosure();
+			*/
+		});
+		
+		buttonText = document.createTextNode("Save Gist To Favorites: " + i);
+		saveButton.appendChild(buttonText);
+		entryLink.appendChild(entryTextNode); //<a>
+		entryContainer.appendChild(entryLink); //<p>
+		entryContainer.appendChild(saveButton); //<button>
+		resultsDiv.appendChild(entryContainer); //<div>
+	}
 
 }
 
 /* Saves a gist object to local storage */
-function saveGist() {
-	//use JSON.stringify(object);
+function saveGist(buttonObj) {
+
+	var index = buttonObj.textContent.match(/\d+$/)[0];
+	index = parseInt(index);
+	favoritesArray.push(gistArray[index].gist);
+	localStorage.setItem('favorites', JSON.stringify(gistArray[index].gist));
+	
+}
+
+function removeResults() {
+	var entries = document.getElementsByName("p");
+	for (var i = 0; i < entries.length; i++) {
+		entries[i].remove();
+	}
 }

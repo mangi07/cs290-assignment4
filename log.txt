@@ -1,0 +1,35 @@
+You log goes in this  file.
+
+Start: Mon, 19 Jan 2015 22:00:00, -0700
+End: Mon, 19 Jan 2015 23:00:00, -0700
+Tasks: Clone and set up repository, review requirements, review source files.
+
+Start: Sun, 26 Jan 2015 16:00:00, -0700
+End: Sun, 26 Jan 2015 16:20:00, -0700
+Tasks: Review source files again after completing Module 3 readings.
+
+Start: Mon, 27 Jan 2015 00:00:00, -0700
+End: Mon, 27 Jan 2015 01:20:00, -0700
+Tasks: Nearly completed implementations of functions.js, tested with qunit_runner.html.
+
+Start: Mon, 26 Jan 2015 11:00:00, -0700
+End: Tues, 27 Jan 2015 01:00:00, -0700
+Tasks: debugged and finished functions.js.
+
+Start: Tues, 27 Jan 2015 01:00:00, -0700
+End: Tues, 27 Jan 2015 02:00:00, -0700
+Tasks: Stared objects.js and reviewed Assignment 4 requirements.
+
+Start: Tues, 27 Jan 2015 11:00:00, -0700
+End: Wed, 28 Jan 2015 03:00:00, -0700
+Tasks: Finished objects.js draft and set up Assignment 4 repository, completed week 4 readings.
+
+Start: Thurs, 29 Jan 2015 10:30:00, -0700
+End: Fri, 30 Jan 2015 04:00:00, -0700
+Tasks: Finished Assignment 4 js ajax and filtering results
+
+Start: Fri, 29 Jan 2015 10:30:00, -0700
+End: Sat, 30 Jan 2015 06:00:00, -0700
+Tasks: Desperate attempt to finish difficult assignment before flight departure!
+
+
