@@ -1,4 +1,5 @@
 /* JSON PERSISTENCE UNTESTED IN THIS DOCUMENT */
+/* LOAD FAVORITES PARTIALLY TESTED SUCCESSFULLY - NEED TO TEST ACTUALLY LOADING FROM LOCAL STORAGE, THOUGH */
 
 var  favorites = [];
 
@@ -43,7 +44,8 @@ function search() {
 	/*set the number of pages to return*/
 	pages = document.getElementsByName("pages")[0].value;
 	if (pages <=5 && pages >= 1) {
-	  
+
+
 	  makeRequest(pages);
 
 	  //eg request url: https://api.github.com/gists?page=2
@@ -55,28 +57,29 @@ function search() {
 
 /* creates gistArray based on filters */
 function makeRequest(pages) {
-	
+
+/* UNCOMMENT THE FOLLOWING WHEN DONE TESTING LOAD FAVORITES */
 	/* code adapted from lecture "ajax.mp4" */
-	var req = new XMLHttpRequest();
-	if(!req){
-		throw 'Unable to create HttpRequest.';
-	} /* or do it the way mozilla shows - see this week's readings */
+//	var req = new XMLHttpRequest();
+//	if(!req){
+//		throw 'Unable to create HttpRequest.';
+//	} /* or do it the way mozilla shows - see this week's readings */
 	
-	for (var i = 0; i < pages; i++) {
+//	for (var i = 0; i < pages; i++) {
 	
-	var url = "https://api.github.com/gists";
-	url += "?page=" + i;
-	req.onreadystatechange = function(){
-		if(this.readyState === 4){
-			searchResultsJSON = JSON.parse(this.responseText);
-			makeGistArray();
+//	var url = "https://api.github.com/gists";
+//	url += "?page=" + i;
+//	req.onreadystatechange = function(){
+//		if(this.readyState === 4){
+//			searchResultsJSON = JSON.parse(this.responseText);
+//			makeGistArray();
 			loadResults(gistArray);
-		}
-	};
-	req.open('GET', url);
-	req.send();
+//		}
+//	};
+//	req.open('GET', url);
+//	req.send();
 	
-	}
+//	}
 	
 
 }
@@ -134,6 +137,10 @@ function makeGistArray() {
 
 /* This will include loading the favorites into HTML as well. */
 function loadResults(gistArr) {
+
+
+/* UNCOMMENT THE FOLLOWING COMMENT WHEN DONE TESTING LOAD FAVORITES */
+/*
 	resultsDiv = document.getElementById("results");
 	var textString;
 	var entryTextNode;
@@ -164,8 +171,21 @@ function loadResults(gistArr) {
 		entryContainer.appendChild(saveButton); //<button>
 		resultsDiv.appendChild(entryContainer); //<div>
 	}
-
+*/
 	
+	
+/* TEST WHETHER favorites CAN LOAD INTO HTML */
+	favorites = [{"description":"description1",
+					"fileName":"fileName1",
+					"gistUrl":"gistUrl1"},
+				{"description":"description2",
+					"fileName":"fileName2",
+					"gistUrl":"gistUrl2"},
+				{"description":"description3",
+					"fileName":"fileName3",
+					"gistUrl":"gistUrl3"}	
+	];
+/* END TEST DATA */	
 	
 	/* UNTESTED */
 	/* LOAD FAVORITES INTO HTML */
@@ -178,14 +198,14 @@ function loadResults(gistArr) {
 	var removeText;
 
 	for (i = 0; i < favorites.length; i++) {
-			favString = "DESCRIPTION: " + gistArr[i].description +
-						" FILE NAME: " + gistArr[i].fileName + 
-						" GIST URL: " + gistArr[i].gistUrl;
+			favString = "DESCRIPTION: " + favorites[i].description +
+						" FILE NAME: " + favorites[i].fileName + 
+						" GIST URL: " + favorites[i].gistUrl;
 		//}
 		favTextNode = document.createTextNode(favString);
 		favContainer = document.createElement("p");
 		favLink = document.createElement("a");
-		favLink.href = gistArr[i].gistUrl;
+		favLink.href = favorites[i].gistUrl;
 		removeButton = document.createElement("button");
 		removeButton.addEventListener("click", function(){
 			removeFav(this);
