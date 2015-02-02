@@ -6,20 +6,6 @@
 var  favorites = [];
 
 window.onload = function() {
-
-	/* localStorage code adapted from lecture javascript-applied-local-storage.mp4 */
-	/*
-	var favorites = localStorage.getItem("favorites");
-		if( favorites === null) {
-			favorites = [];
-			//{"gistArr": [{"key1":"value1"},{"key2":"value2"}]}
-			localStorage.setItem('favorites', JSON.stringify(favorites));
-		}
-		else {
-			favorites = JSON.parse(favorites);
-			favoritesArray = favorites;
-		}
-	*/
 	
 	/* localStorage code adapted from lecture javascript-applied-local-storage.mp4 */
 	favorites = localStorage.getItem("favorites");
@@ -36,27 +22,11 @@ window.onload = function() {
 var pages = 1;
 var searchResultsJSON;
 var gistArray = [];	// an array of gist objects
-//var favoritesArray = [];// an array filled with gist objects from local storage
-
 
 /*input: number of pages requested (ie: number of requests made)
   return: JSON object representing response (optionally filtered)
 */
-function search() {
-	
-	/* Clear the previous search */
-	/*
-	while (gistArray.length > 0) {
-		gistArray.pop();
-	}
-	/* Check if there are any items already listed from a previous search. 
-	/* If so, clear gistArray and remove all items displayed under search results. 
-	var searchItemsDisplayed = document.getElementById("results").getElementsByTagName("p");
-	while (searchItemsDisplayed.length > 0) {
-		searchItemsDisplayed[0].remove();
-	}
-	*/
-	
+function search() {	
 	/* Clear the previous search */
 	removeResults();
 	
@@ -76,18 +46,16 @@ function search() {
 
 /* creates gistArray based on filters */
 function makeRequest(pages) {
-
-/* UNCOMMENT THE FOLLOWING WHEN DONE TESTING LOAD FAVORITES */
 	/* code adapted from lecture "ajax.mp4" */
 	var req = new XMLHttpRequest();
 	if(!req){
 		throw 'Unable to create HttpRequest.';
 	}
 	
-//	for (var i = 0; i < pages; i++) {
+	for (var i = 0; i < pages; i++) {
 	
 	var url = "https://api.github.com/gists";
-//	url += "?page=" + i;
+	url += "?page=" + i;
 	req.onreadystatechange = function(){
 		if(this.readyState === 4){
 			searchResultsJSON = JSON.parse(this.responseText);
@@ -98,18 +66,17 @@ function makeRequest(pages) {
 	req.open('GET', url);
 	req.send();
 	
-//	}
+	}
 	
 
 }
 
 /* Returns an array of gist objects based on user filters*/
 function makeGistArray() {
-	//var fileNames = [];
 	var gist;		//a single gist object
 	var description;
 	var fileName;
-	var gistUrl;	//url of gist
+	var gistUrl;
 	var allFiltersOff = false;
 	
 	//get language filters from user
@@ -154,12 +121,7 @@ function makeGistArray() {
 	}
 }
 
-/* This will include loading the favorites into HTML as well. */
-function loadResults(gistArr) {
-
-
-/* UNCOMMENT THE FOLLOWING COMMENT WHEN DONE TESTING LOAD FAVORITES */
-	
+function loadResults(gistArr) {	
 	var resultsDiv = document.getElementById("results");
 	var textString;
 	var entryTextNode;
@@ -193,59 +155,9 @@ function loadResults(gistArr) {
 		entryContainer.appendChild(entryLink); //<p>
 		entryContainer.appendChild(saveButton); //<button>
 		resultsDiv.appendChild(entryContainer); //<div>
-		
-		
+
 	}
 
-	
-	
-/* TEST WHETHER favorites CAN LOAD INTO HTML */
-/*
-	favorites = [{"description":"description1",
-					"fileName":"fileName1",
-					"gistUrl":"gistUrl1"},
-				{"description":"description2",
-					"fileName":"fileName2",
-					"gistUrl":"gistUrl2"},
-				{"description":"description3",
-					"fileName":"fileName3",
-					"gistUrl":"gistUrl3"}	
-	];
-/* END TEST DATA */	
-	
-	/* LOAD FAVORITES INTO HTML */
-	// 	MAY NEED TO REMOVE THIS LATER IF IT IS COVERED IN FUNCTION SAVEGIST:
-	/*
-	var favsDiv = document.getElementById("favorites");
-	var favString;
-	var favTextNode;
-	var favContainer;
-	var favLink;
-	var removeButton;
-	var removeText;
-
-	for (i = 0; i < favorites.length; i++) {
-			favString = "DESCRIPTION: " + favorites[i].description +
-						" FILE NAME: " + favorites[i].fileName + 
-						" GIST URL: " + favorites[i].gistUrl;
-		//}
-		favTextNode = document.createTextNode(favString);
-		favContainer = document.createElement("p");
-		favLink = document.createElement("a");
-		favLink.href = favorites[i].gistUrl;
-		removeButton = document.createElement("button");
-		removeButton.addEventListener("click", function(){
-			removeFav(this);
-		});
-		
-		removeText = document.createTextNode("Remove Gist From Favorites: " + i);
-		removeButton.appendChild(removeText);
-		favLink.appendChild(favTextNode); //<a>
-		favContainer.appendChild(favLink); //<p>
-		favContainer.appendChild(removeButton); //<button>
-		favsDiv.appendChild(favContainer); //<div>
-	}
-	*/
 }
 
 /* LOAD FAVORITES INTO HTML */
@@ -259,10 +171,9 @@ function loadFavs() {
 	var removeText;
 
 	for (i = 0; i < favorites.length; i++) {
-			favString = "DESCRIPTION: " + favorites[i].description +
-						" FILE NAME: " + favorites[i].fileName + 
-						" GIST URL: " + favorites[i].gistUrl;
-		//}
+		favString = "DESCRIPTION: " + favorites[i].description +
+					" FILE NAME: " + favorites[i].fileName + 
+					" GIST URL: " + favorites[i].gistUrl;
 		favTextNode = document.createTextNode(favString);
 		favContainer = document.createElement("p");
 		favLink = document.createElement("a");
@@ -283,28 +194,12 @@ function loadFavs() {
 
 /* Saves a gist object to local storage */
 function saveGist(buttonObj) {
-
-	/*old code
-	var index = buttonObj.textContent.match(/\d+$/)[0];
-	index = parseInt(index);
-	favoritesArray.push(gistArray[index]);
-	localStorage.setItem('favorites', JSON.stringify(gistArray[index].gist));
-	*/
-	
-	/*new code*/
-	alert("saveGist called");
 	var index = buttonObj.textContent.match(/\d+$/)[0];
 	var favGist;
-	alert(index);
 	index = parseInt(index);
 	favGist = gistArray[index]; //newest
 	favorites.push(/*gistArray[index]*/favGist);
 	localStorage.setItem('favorites', JSON.stringify(favorites));
-	
-	/* Remove gist from gistArray */
-	//if (index > -1) {
-	//	array.splice(index, 1);
-	//}
 	
 	/* Remove gist from the displayed search results */
 	buttonObj.parentNode.remove();
@@ -315,23 +210,11 @@ function saveGist(buttonObj) {
 }
 
 function removeFav (buttonObj) {
-	alert("removeFav called");
 	var index = buttonObj.textContent.match(/\d+$/)[0];
-	alert(index);
 	index = parseInt(index);
-	favorites.splice(index, 1);	//syntax
+	favorites.splice(index, 1);
 	localStorage.setItem('favorites', JSON.stringify(favorites));
 	
-	//var favsDisplayed = document.getElementById("favorites").getElementsByTagName("p");
-	//favsDisplayed[index].remove();
-	
-	/*
-	var favItemsDisplayed = document.getElementById("favorites").getElementsByTagName("p");
-	while (favItemsDisplayed.length > 0) {
-		favItemsDisplayed[0].remove();
-	}
-	loadFavs();
-	*/
 	reloadFavs();
 	
 }
