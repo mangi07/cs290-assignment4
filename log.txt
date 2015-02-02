@@ -32,4 +32,10 @@ Start: Fri, 29 Jan 2015 10:30:00, -0700
 End: Sat, 30 Jan 2015 06:00:00, -0700
 Tasks: Desperate attempt to finish difficult assignment before flight departure!
 
+Start: Sat, 30 Jan 2015 07:30:00, -0700
+End: Sat, 30 Jan 2015 08:30:00, -0700
+Tasks: Debugging.
 
+Start: Sun, 01 Feb 2015 00:00:00, -0700
+End: Sat, 01 Feb 2015 04:00:00, -0700
+Tasks: Debugging and adding final required features, upload to server and GitHub, assignment resubmission.
